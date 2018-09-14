@@ -4,14 +4,18 @@ import { User } from '.'
 let user
 
 beforeEach(async () => {
-  user = await User.create({ name: 'user', email: 'a@a.com', password: '123456' })
+  user = await User.create({ 
+    display_name: 'user', 
+    email: 'a@a.com', 
+    password: '123456' 
+  })
 })
 
 describe('set email', () => {
-  it('sets name automatically', () => {
-    user.name = ''
+  it('sets display_name automatically', () => {
+    user.display_name = ''
     user.email = 'test@example.com'
-    expect(user.name).toBe('test')
+    expect(user.display_name).toBe('test')
   })
 
   it('sets picture automatically', () => {
@@ -37,7 +41,7 @@ describe('view', () => {
     const view = user.view()
     expect(view).toBeDefined()
     expect(view.id).toBe(user.id)
-    expect(view.name).toBe(user.name)
+    expect(view.display_name).toBe(user.display_name)
     expect(view.picture).toBe(user.picture)
   })
 
@@ -45,10 +49,10 @@ describe('view', () => {
     const view = user.view(true)
     expect(view).toBeDefined()
     expect(view.id).toBe(user.id)
-    expect(view.name).toBe(user.name)
+    expect(view.display_name).toBe(user.display_name)
     expect(view.email).toBe(user.email)
     expect(view.picture).toBe(user.picture)
-    expect(view.createdAt).toEqual(user.createdAt)
+    expect(view.created_at).toEqual(user.created_at)
   })
 })
 

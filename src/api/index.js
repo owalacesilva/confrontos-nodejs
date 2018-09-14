@@ -2,7 +2,11 @@ import { Router } from 'express'
 import user from './user'
 import auth from './auth'
 import passwordReset from './password-reset'
-import confrontosServer from './confrontos-server'
+import team from './team'
+import match from './match'
+import invitation from './invitation'
+import notification from './notification'
+import message from './message'
 
 const router = new Router()
 
@@ -26,12 +30,16 @@ const router = new Router()
  * @apiParam {String} [q] Query to search.
  * @apiParam {Number{1..30}} [page=1] Page number.
  * @apiParam {Number{1..100}} [limit=30] Amount of returned items.
- * @apiParam {String[]} [sort=-createdAt] Order of returned items.
+ * @apiParam {String[]} [sort=-created_at] Order of returned items.
  * @apiParam {String[]} [fields] Fields to be returned.
  */
 router.use('/users', user)
 router.use('/auth', auth)
 router.use('/password-resets', passwordReset)
-router.use('/confrontos-servers', confrontosServer)
+router.use('/teams', team)
+router.use('/matches', match)
+router.use('/invitations', invitation)
+router.use('/notifications', notification)
+router.use('/messages', message)
 
 export default router

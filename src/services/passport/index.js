@@ -42,16 +42,20 @@ passport.use('password', new BasicStrategy((email, password, done) => {
 
   User.findOne({ email }).then((user) => {
     if (!user) {
-      done(true)
+      done(`Could' found user email ${email}`)
       return null
     }
     return user.authenticate(password, user.password).then((user) => {
       done(null, user)
       return null
-    }).catch(done)
+    }).catch(err => done(err))
   })
 }))
 
+/**
+ * Here more about subject
+ * @see https://docs.telerik.com/platform/backend-services/rest/security/security-master-key-auth
+ */
 passport.use('master', new BearerStrategy((token, done) => {
   if (token === masterKey) {
     done(null, {})

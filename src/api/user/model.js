@@ -1,12 +1,12 @@
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import mongoose, { Schema } from 'mongoose'
-import mongooseKeywords from 'mongoose-keywords'
+import MongooseKeywords from 'mongoose-keywords'
 import { env } from '../../config'
 
-const roles = ['user', 'admin']
+const roles = ['athleta', 'manager']
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   email: {
     type: String,
     match: /^\S+@\S+\.\S+$/,
@@ -15,43 +15,73 @@ const userSchema = new Schema({
     trim: true,
     lowercase: true
   },
+  display_name: {
+    type: String,
+    required: [true, 'Display name is required'],
+    trim: true
+  },
+  current_contract: {
+    type: String,
+    required: [true, 'Contract is required'],
+    enum: ['basic', 'premium'],
+    lowercase: true, 
+    default: 'basic'
+  },
   password: {
     type: String,
     required: true,
     minlength: 6
   },
-  name: {
-    type: String,
-    index: true,
-    trim: true
-  },
   role: {
     type: String,
     enum: roles,
-    default: 'user'
+    default: 'athleta'
   },
   picture: {
     type: String,
     trim: true
-  }
+  },
+  activities: [{
+    activity: {
+      type: String
+    },
+    points: {
+      type: Number
+    },
+  }],
+  settings: [{
+    setting: {
+      type: String
+    },
+    value: {
+      type: Schema.Types.Mixed
+    },
+  }]
 }, {
-  timestamps: true
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
+  },
+  toJSON: {
+    virtuals: true,
+    transform: (obj, ret) => { delete ret._id }
+  }
 })
 
-userSchema.path('email').set(function (email) {
+UserSchema.path('email').set(function (email) {
   if (!this.picture || this.picture.indexOf('https://gravatar.com') === 0) {
     const hash = crypto.createHash('md5').update(email).digest('hex')
     this.picture = `https://gravatar.com/avatar/${hash}?d=identicon`
   }
 
-  if (!this.name) {
-    this.name = email.replace(/^(.+)@.+$/, '$1')
+  if (!this.display_name) {
+    this.display_name = email.replace(/^(.+)@.+$/, '$1')
   }
 
   return email
 })
 
-userSchema.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
 
   /* istanbul ignore next */
@@ -63,13 +93,20 @@ userSchema.pre('save', function (next) {
   }).catch(next)
 })
 
-userSchema.methods = {
+UserSchema.methods = {
   view (full) {
     let view = {}
-    let fields = ['id', 'name', 'picture']
+    let fields = ['id', 'display_name', 'picture']
 
     if (full) {
-      fields = [...fields, 'email', 'createdAt']
+      fields = [
+        ...fields, 
+        'email', 
+        'role', 
+        'activities', 
+        'current_contract', 
+        'created_at'
+      ]
     }
 
     fields.forEach((field) => { view[field] = this[field] })
@@ -82,13 +119,13 @@ userSchema.methods = {
   }
 }
 
-userSchema.statics = {
+UserSchema.statics = {
   roles
 }
 
-userSchema.plugin(mongooseKeywords, { paths: ['email', 'name'] })
+UserSchema.plugin(MongooseKeywords, { paths: ['email', 'display_name'] })
 
-const model = mongoose.model('User', userSchema)
+const model = mongoose.model('User', UserSchema)
 
 export const schema = model.schema
 export default model

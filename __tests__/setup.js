@@ -3,7 +3,7 @@ import MongodbMemoryServer from 'mongodb-memory-server'
 import mongoose from '../src/services/mongoose'
 
 EventEmitter.defaultMaxListeners = Infinity
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
+// jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
 
 global.Array = Array
 global.Date = Date
@@ -21,19 +21,31 @@ global.TypeError = TypeError
 global.parseInt = parseInt
 global.parseFloat = parseFloat
 
-let mongoServer
+let mongod
+const opts = { 
+  config: {
+    useMongoClient: true, 
+    autoIndex: false 
+  }
+}
 
 beforeAll(async () => {
-  mongoServer = new MongodbMemoryServer()
-  const mongoUri = await mongoServer.getConnectionString()
-  await mongoose.connect(mongoUri, (err) => {
+  /*mongod = new MongodbMemoryServer({
+    binary: {
+      version: "3.4.14",
+      debug: true
+    }
+  })
+  const mongoUri = await mongod.getConnectionString()*/
+  const mongoUri = "mongodb://localhost/confrontos-server-test"
+  await mongoose.connect(mongoUri, opts, (err) => {
     if (err) console.error(err)
   })
 })
 
 afterAll(async () => {
   await mongoose.disconnect()
-  await mongoServer.stop()
+  // await mongod.stop()
 })
 
 afterEach(async () => {

@@ -13,7 +13,7 @@ const passwordResetSchema = new Schema({
     index: true,
     default: () => uid(32)
   },
-  createdAt: {
+  created_at: {
     type: Date,
     default: Date.now,
     expires: 3600

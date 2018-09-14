@@ -7,7 +7,7 @@ import { schema } from './model'
 export User, { schema } from './model'
 
 const router = new Router()
-const { email, password, name, picture, role } = schema.tree
+const { email, password, display_name, picture, role } = schema.tree
 
 /**
  * @api {get} /users Retrieve users
@@ -21,7 +21,7 @@ const { email, password, name, picture, role } = schema.tree
  * @apiError 401 Admin access only.
  */
 router.get('/',
-  token({ required: true, roles: ['admin'] }),
+  token({ required: true }),
   query(),
   index)
 
@@ -56,7 +56,7 @@ router.get('/:id',
  * @apiParam {String} access_token Master access_token.
  * @apiParam {String} email User's email.
  * @apiParam {String{6..}} password User's password.
- * @apiParam {String} [name] User's name.
+ * @apiParam {String} [display_name] User's display_name.
  * @apiParam {String} [picture] User's picture.
  * @apiParam {String=user,admin} [role=user] User's role.
  * @apiSuccess (Sucess 201) {Object} user User's data.
@@ -65,8 +65,8 @@ router.get('/:id',
  * @apiError 409 Email already registered.
  */
 router.post('/',
-  master(),
-  body({ email, password, name, picture, role }),
+  // master(),
+  body({ email, password, display_name, picture, role }),
   create)
 
 /**
@@ -75,7 +75,7 @@ router.post('/',
  * @apiGroup User
  * @apiPermission user
  * @apiParam {String} access_token User access_token.
- * @apiParam {String} [name] User's name.
+ * @apiParam {String} [display_name] User's display_name.
  * @apiParam {String} [picture] User's picture.
  * @apiSuccess {Object} user User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
@@ -84,7 +84,7 @@ router.post('/',
  */
 router.put('/:id',
   token({ required: true }),
-  body({ name, picture }),
+  body({ display_name, picture }),
   update)
 
 /**

@@ -25,10 +25,11 @@ const config = {
     root: path.join(__dirname, '..'),
     port: process.env.PORT || 9000,
     ip: process.env.IP || '0.0.0.0',
-    apiRoot: process.env.API_ROOT || '',
+    apiRoot: process.env.API_ROOT || '/api',
     defaultEmail: 'no-reply@confrontos-server.com',
     sendgridKey: requireProcessEnv('SENDGRID_KEY'),
     masterKey: requireProcessEnv('MASTER_KEY'),
+    fcmApiKey: requireProcessEnv('FCM_API_KEY'),
     jwtSecret: requireProcessEnv('JWT_SECRET'),
     mongo: {
       options: {
@@ -41,7 +42,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb://localhost/confrontos-server-dev',
+      uri: 'mongodb://localhost:27017/confrontos-server-dev',
       options: {
         debug: true
       }
