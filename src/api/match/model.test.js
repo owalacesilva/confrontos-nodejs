@@ -29,8 +29,9 @@ beforeEach(async () => {
 })
 
 describe('view', () => {
-  it('returns simple view', () => {
-    const view = match.view()
+  /* test('returns simple view', () => { }) */
+  test('returns full view', () => {
+    const view = match.view(true)
     expect(typeof view).toBe('object')
     expect(view.id).toBe(match.id)
     expect(view.date).toBe(match.date)
@@ -39,13 +40,13 @@ describe('view', () => {
     expect(view.updated_at).toBeTruthy()
   })
 
-  /*it('returns full view', () => {
-    const view = match.view(true)
-    expect(typeof view).toBe('object')
-    expect(view.id).toBe(match.id)
-    expect(view.date).toBe(match.date)
-    expect(view.start_at).toBe(match.start_at)
-    expect(view.created_at).toBeTruthy()
-    expect(view.updated_at).toBeTruthy()
-  })*/
+  test('update matches upcoming (pending)', async () => {
+    const count = await Match.updateMatchesUpcoming()
+    expect(Number.isNaN(count)).toBe(false)
+  })
+
+  test('update matches finished (rating)', async () => {
+    const count = await Match.updateMatchesFinished()
+    expect(Number.isNaN(count)).toBe(false)
+  })
 })

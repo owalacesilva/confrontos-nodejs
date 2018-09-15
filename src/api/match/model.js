@@ -1,5 +1,7 @@
+import _ from 'lodash'
 import mongoose, { Schema } from 'mongoose'
 import AddressSchema from '../../components/address'
+import { Notification } from './../notification'
 
 const MatchSchema = new Schema({
   date: {
@@ -20,11 +22,28 @@ const MatchSchema = new Schema({
     type: AddressSchema, 
     required: [true, 'Address is required']
   },
+  status: {
+    type: String,
+    enum: ['pending', 'in_progress', 'finished', 'closed']
+  },
   stats: [{
     "name": String,
     "label": String,
     "home_team_score": Number,
     "visiting_team_score": Number
+  }],
+  revisions: [{
+    user: {
+      type: Schema.ObjectId,
+      required: [true, 'Player user is required'],
+      ref: 'User'
+    },
+    stats: [{
+      "name": String,
+      "label": String,
+      "home_team_score": Number,
+      "visiting_team_score": Number
+    }]
   }],
   lineups: [{
     home_team:{
@@ -83,6 +102,7 @@ MatchSchema.methods = {
       home_team: this.home_team,
       visiting_team: this.visiting_team,
       stats: this.stats,
+      revisions: this.revisions,
       lineups: this.lineups,
       created_at: this.created_at,
       updated_at: this.updated_at
@@ -92,6 +112,79 @@ MatchSchema.methods = {
       ...view
       // add properties for a full view
     } : view
+  }
+}
+
+MatchSchema.pre('save', function(next) {
+  this.wasNew = this.isNew
+  next()
+})
+
+MatchSchema.statics = {
+  // Atualiza todas as partidas que seram iniciadas
+  updateMatchesUpcoming () {
+    const Match = mongoose.model('Match')
+
+    return Match.distinct('_id', {
+      date: {
+        $lte: new Date()
+      },
+      status: 'pending'
+    }).then(matchesId => {
+      return Match.updateMany({ 
+        '_id': { 
+          $in: matchesId 
+        } 
+      }, { 
+        status: 'in_progress' 
+      }).then(result => {
+        Match.find({ '_id': { $in: matchesId } })
+          .then((matches) => {
+            _.forEach(matches, (match, key) => {
+              [match.home_team, match.visiting_team].forEach((teamId) => {
+                Notification.notify('match_status_changed', match, { 
+                  match_id: match._id, 
+                  recipient: teamId
+                })
+              })
+            })
+          })
+        return result.nModified
+      })
+    })
+  },
+
+  // Atualiza todas as partidas que estam em andamento e foram encerradas
+  updateMatchesFinished () {
+    const Match = mongoose.model('Match')
+
+    return Match.distinct('_id', {
+      date: {
+        $lte: new Date()
+      },
+      status: 'finished'
+    }).then(matchesId => {
+      return Match.updateMany({ 
+        '_id': { 
+          $in: matchesId 
+        } 
+      }, { 
+        status: 'closed' 
+      }).then(result => {
+        Match.find({ '_id': { $in: matchesId } })
+          .then((matches) => {
+            _.forEach(matches, (match, key) => {
+              [match.home_team, match.visiting_team].forEach((teamId) => {
+                Notification.notify('close_match', match, { 
+                  match_id: match._id, 
+                  recipient: teamId
+                })
+              })
+            })
+          })
+        return result.nModified
+      })
+    })
   }
 }
 
