@@ -34,7 +34,7 @@ router.get('/:id',
   show)
 
 /**
- * @api {post} /matches/:id/revision Create revision
+ * @api {post} /matches/:id/revisions Create revision
  * @apiName CreateRevision
  * @apiGroup Match
  * @apiSuccess {Object} match Match's data.
@@ -42,7 +42,7 @@ router.get('/:id',
  * @apiError 404 Match not found.
  * @apiError 401 user access only.
  */
-router.post('/:id/revision',
+router.post('/:id/revisions',
   token({ required: true }),
   body({ 
     stats: {

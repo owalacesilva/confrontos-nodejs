@@ -24,14 +24,17 @@ const MatchSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'in_progress', 'finished', 'closed']
+    enum: ['pending', 'in_progress', 'finished', 'closed'],
+    default: 'pending'
   },
-  stats: [{
-    "name": String,
-    "label": String,
-    "home_team_score": Number,
-    "visiting_team_score": Number
-  }],
+  stats: {
+    type: {
+      "name": String,
+      "label": String,
+      "home_team_score": Number,
+      "visiting_team_score": Number
+    }
+  },
   revisions: [{
     user: {
       type: Schema.ObjectId,

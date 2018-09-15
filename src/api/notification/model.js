@@ -138,13 +138,33 @@ NotificationSchema.statics = {
         icon: "ic_launcher",
         color: '#fff'
       }
+    } else if (action === 'close_match') {
+      information = `<div>Partida encerrada</div>`;
+      newDoc = {
+        recipient: params.recipient,
+        anchor: 'Match',
+        information, 
+        payload: {
+          match_id: params.match_id
+        }
+      }
+      notification = {
+        title: "Partida encerrada", 
+        subtitle: "Partida finalizada...", 
+        body: "Partida encerrada",
+        sound: "default",
+        click_action: null,
+        badge: 1, 
+        icon: "ic_launcher",
+        color: '#fff'
+      }
     }
     
     const notif = await model.create({ ...newDoc })
     const message = {
       priority: 'high', 
       collapse_key: 'com.confrontos', 
-      dry_run: env === 'test1' ? true: false, // debug
+      dry_run: env === 'test' ? true: false, // debug
       // to: 'dXQmCN_3iJ8:APA91bG0HZe4nacygq1l0hLhdLnQVVrKf0CkS3nV1KG8GGVdAJxcAd7rsxCgEte755sECLa2QT5TRrvAZRwlzCJzueoYVcJKL5Xt2JPgGeyESNtgxxXpDOeJOmL1afHtSEFqcn_iyIVz', 
       registration_ids: [
         'dXQmCN_3iJ8:APA91bG0HZe4nacygq1l0hLhdLnQVVrKf0CkS3nV1KG8GGVdAJxcAd7rsxCgEte755sECLa2QT5TRrvAZRwlzCJzueoYVcJKL5Xt2JPgGeyESNtgxxXpDOeJOmL1afHtSEFqcn_iyIVz', 

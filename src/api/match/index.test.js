@@ -69,9 +69,9 @@ describe('Match test suite', () => {
     expect(status).toBe(404)
   })
 
-  test('POST /matches/:id/revision 201 (avoid duplicate)', async () => {
+  test('POST /matches/:id/revisions 201 (avoid duplicate)', async () => {
     const { status, body } = await request(app())
-      .post(`${apiRoot}/${match.id}/revision`)
+      .post(`${apiRoot}/${match.id}/revisions`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({ stats })
     expect(status).toBe(201)
@@ -83,15 +83,15 @@ describe('Match test suite', () => {
     expect(body.revisions[0].stats[0].name).toEqual(stats[0].name)
   })
 
-  test('POST /matches/:id/revision 401', async () => {
+  test('POST /matches/:id/revisions 401', async () => {
     const { status } = await request(app())
-      .post(`${apiRoot}/${match.id}/revision`)
+      .post(`${apiRoot}/${match.id}/revisions`)
     expect(status).toBe(401)
   })
 
-  test('POST /matches/:id/revision 404', async () => {
+  test('POST /matches/:id/revisions 404', async () => {
     const { status } = await request(app())
-      .post(`${apiRoot}/123456789098765432123456/revision`)
+      .post(`${apiRoot}/123456789098765432123456/revisions`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({ stats })
     expect(status).toBe(404)
