@@ -1,10 +1,22 @@
 import { success, notFound } from '../../services/response/'
 import { Message } from '.'
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  Message.create(body)
-    .then((message) => message.view(true))
-    .then(success(res, 201))
+export const create = ({ bodymen: { body: { chat_id, sender, text } } }, res, next) =>
+  Message.findOne({ chat_id: chat_id })
+    .then((lastMessage) => {
+      let receiver;
+      if (sender === lastMessage.sender.toString()) {
+        receiver = lastMessage.receiver.toString()
+      } else {
+        receiver = lastMessage.sender.toString()
+      }
+      return receiver 
+    })
+    .then((receiver) => Message.create({ chat_id, sender, receiver, author: sender, message: { text } })
+      .then((message) => message.view(true))
+      .then(success(res, 201))
+      .catch(next)
+    )
     .catch(next)
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>

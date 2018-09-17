@@ -7,7 +7,7 @@ import { schema } from './model'
 export Message, { schema } from './model'
 
 const router = new Router()
-const { sender, receiver, author, message } = schema.tree
+const { chat_id, sender } = schema.tree
 
 /**
  * @api {post} /messages Create message
@@ -23,7 +23,13 @@ const { sender, receiver, author, message } = schema.tree
  */
 router.post('/',
   token({ required: true }),
-  body({ sender, receiver, author, message }),
+  body({ 
+    chat_id, 
+    sender, 
+    text: {
+      type: String
+    }
+  }),
   create)
 
 /**
