@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Router } from 'express'
 import cors from 'cors'
 import path from 'path'
 import compression from 'compression'
@@ -30,6 +30,7 @@ export default (apiRoot, routes) => {
 
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json({ limit: '50MB' }))
+  app.use(express.static('public'))
   app.use(apiRoot, routes)
   app.use((err, req, res, next) => {
     logger.error(err)

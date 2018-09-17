@@ -1,6 +1,6 @@
 import fs from 'fs'
 import papercut from 'papercut'
-import { ip, root } from './../../config'
+import { ip, port, root } from './../../config'
 
 const AvatarUploader = papercut.Schema(function(schema) {
   schema.version({
@@ -23,8 +23,8 @@ const AvatarUploader = papercut.Schema(function(schema) {
 
 papercut.configure(function(){
   papercut.set('storage', 'file')
-  papercut.set('directory', `${root}/uploads`)
-  papercut.set('url', `${ip}/uploads`)
+  papercut.set('directory', `${root}/public/uploads`)
+  papercut.set('url', `http://${ip}:${port}/uploads`)
   papercut.set('extension', 'png')
 });
 

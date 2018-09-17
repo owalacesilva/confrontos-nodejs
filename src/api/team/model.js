@@ -58,7 +58,7 @@ const TeamSchema = new Schema({
     default: {}
   },
   schedule: [{
-    day: {
+    weekday: {
       type: Number
     },
     hour: {
@@ -117,6 +117,7 @@ TeamSchema.methods = {
       address: this.address,
       ranking: this.ranking,
       schedule: this.schedule,
+      pictures: this.pictures,
       players: this.players,
       keywords: this.keywords,
       created_at: this.created_at,

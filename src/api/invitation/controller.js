@@ -17,10 +17,10 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
         select: 'display_name' 
       }, { 
         path: 'team', 
-        select: 'display_name' 
+        select: 'display_name pictures' 
       }, {
         path: 'guest_team', 
-        select: 'display_name' 
+        select: 'display_name pictures' 
       },{
         path: 'match',
         select: 'home_team visiting_team'
