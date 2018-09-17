@@ -24,7 +24,16 @@ const { guest_user, team, guest_team, date, start_at, status } = schema.tree
  */
 router.post('/',
   token({ required: true }),
-  body({ guest_user, team, guest_team, date, start_at }),
+  body({ 
+    guest_user, 
+    team, 
+    guest_team, 
+    date, 
+    start_at, 
+    message: { 
+      type: String 
+    } 
+  }),
   create)
 
 /**

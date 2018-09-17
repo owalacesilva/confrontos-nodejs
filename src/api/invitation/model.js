@@ -67,7 +67,7 @@ InvitationSchema.post('save', function (doc, next) {
       .populate({ path: 'team', select: 'display_name' })
       .populate({ path: 'guest_team', select: 'display_name' })
       .execPopulate()
-      .then((invitation) => {
+      /*.then((invitation) => {
         return Message.create({
           sender: invitation.user._id,
           receiver: invitation.guest_user._id,
@@ -81,13 +81,12 @@ InvitationSchema.post('save', function (doc, next) {
           return invitation
         })
         .catch(next)
-      })
+      })*/
       .then((invitation) => {
         Notification.notify('invitation_created', invitation, { 
           invitation_id: invitation._id, 
           recipient: invitation.guest_user._id 
         })
-        
         next()
       })
   }

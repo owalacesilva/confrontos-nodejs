@@ -1,10 +1,30 @@
 import _ from 'lodash'
 import { success, notFound } from '../../services/response/'
 import { Invitation } from '.'
+import { Message } from './../message'
 import { mergeInvitationAttr } from './../../services/utils/merge'
 
 export const create = ({ bodymen: { body }, user }, res, next) =>
   Invitation.create({ ...body, user: user.id })
+    .then((invitation) => {
+      if (invitation && body.message && typeof body.message === 'string') {
+        return Message.create({
+          sender: invitation.user,
+          receiver: invitation.guest_user,
+          author: invitation.user,
+          message: { text: body.message },
+        })
+        .then((message) => {
+          message.setNext('chat_id', (err, doc) => {
+            if(err) console.log('Cannot increment the chat id', err)
+          })
+          return invitation
+        })
+        .catch(next)
+      } else {
+        return invitation
+      }
+    })
     .then((invitation) => invitation.view(true))
     .then(success(res, 201))
     .catch(next)
