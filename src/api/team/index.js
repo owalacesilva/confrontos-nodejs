@@ -22,7 +22,20 @@ const { display_name, sport, address, schedule, phones } = schema.tree
  */
 router.post('/',
   token({ required: true }),
-  body({ display_name, sport, address, schedule, phones }),
+  body({ 
+    display_name, 
+    sport, 
+    address, 
+    schedule, 
+    phones,
+    picture: {
+      width: { type: String }, 
+      height: { type: String }, 
+      type: { type: String }, 
+      fileSize: { type: Number }, 
+      data: { type: String }
+    } 
+  }),
   create)
 
 /**

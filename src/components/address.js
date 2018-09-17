@@ -2,6 +2,7 @@ import { Schema } from 'mongoose'
 
 /* based off Google */
 const AddressSchema = new Schema({
+  label: String, 
   type: {
     type: String,
     enum: ['work', 'home']

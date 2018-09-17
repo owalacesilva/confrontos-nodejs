@@ -27,14 +27,12 @@ const MatchSchema = new Schema({
     enum: ['pending', 'in_progress', 'finished', 'closed'],
     default: 'pending'
   },
-  stats: {
-    type: {
-      "name": String,
-      "label": String,
-      "home_team_score": Number,
-      "visiting_team_score": Number
-    }
-  },
+  stats: [{
+    "name": String,
+    "label": String,
+    "home_team_score": Number,
+    "visiting_team_score": Number
+  }],
   revisions: [{
     user: {
       type: Schema.ObjectId,
@@ -101,6 +99,7 @@ MatchSchema.methods = {
       date: this.date,
       start_at: this.start_at,
       sport: this.sport,
+      status: this.status,
       address: this.address,
       home_team: this.home_team,
       visiting_team: this.visiting_team,

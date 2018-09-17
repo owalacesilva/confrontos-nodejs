@@ -29,7 +29,7 @@ export default (apiRoot, routes) => {
   })
 
   app.use(bodyParser.urlencoded({ extended: false }))
-  app.use(bodyParser.json())
+  app.use(bodyParser.json({ limit: '50MB' }))
   app.use(apiRoot, routes)
   app.use((err, req, res, next) => {
     logger.error(err)

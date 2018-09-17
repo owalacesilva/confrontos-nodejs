@@ -8,14 +8,14 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
     .then(count => Match.find(query, select, cursor)
       .populate([{ 
         path: 'home_team', 
-        select: 'user', 
+        select: 'user display_name abbr slug', 
         populate: [{ 
           path: 'user', 
           select: 'display_name' 
         }] 
       }, { 
         path: 'visiting_team', 
-        select: 'user',
+        select: 'user display_name abbr slug',
         populate: [{ 
           path: 'user', 
           select: 'display_name'

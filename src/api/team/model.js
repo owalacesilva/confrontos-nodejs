@@ -75,7 +75,11 @@ const TeamSchema = new Schema({
       type: String,
       required: [true, 'Player position is required'],
     }
-  }]
+  }],
+  pictures: {
+    type: Map,
+    of: String
+  }
 }, {
   timestamps: {
     createdAt: 'created_at',

@@ -1,9 +1,11 @@
 import { success, notFound } from '../../services/response/'
 import { Team } from '.'
+import picture from './picture'
 
 export const create = ({ bodymen: { body }, user }, res, next) =>
   Team.create({ ...body, user: user.id })
-    .then((team) => team.view(true))
+    .then(picture(body))
+    .then((team) => team ? team.view(true) : next())
     .then(success(res, 201))
     .catch(next)
 
