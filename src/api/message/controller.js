@@ -10,6 +10,16 @@ export const create = ({ bodymen: { body } }, res, next) =>
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   Message.count(query)
     .then(count => Message.find(query, select, cursor)
+      .populate([{ 
+        path: 'sender', 
+        select: 'display_name'
+      }, { 
+        path: 'receiver', 
+        select: 'display_name'
+      }, { 
+        path: 'author', 
+        select: 'display_name'
+      }])
       .then((messages) => ({
         count,
         rows: messages.map((message) => message.view())

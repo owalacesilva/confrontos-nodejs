@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 import { Notification } from './../notification'
 import { Match } from './../match'
+import { Message } from './../message'
 
 const InvitationSchema = new Schema({
   user: {
@@ -66,6 +67,21 @@ InvitationSchema.post('save', function (doc, next) {
       .populate({ path: 'team', select: 'display_name' })
       .populate({ path: 'guest_team', select: 'display_name' })
       .execPopulate()
+      .then((invitation) => {
+        return Message.create({
+          sender: invitation.user._id,
+          receiver: invitation.guest_user._id,
+          author: invitation.user._id,
+          message: { text: "Boa noite" },
+        })
+        .then((message) => {
+          message.setNext('chat_id', (err, doc) => {
+            if(err) console.log('Cannot increment the chat id', err)
+          })
+          return invitation
+        })
+        .catch(next)
+      })
       .then((invitation) => {
         Notification.notify('invitation_created', invitation, { 
           invitation_id: invitation._id, 

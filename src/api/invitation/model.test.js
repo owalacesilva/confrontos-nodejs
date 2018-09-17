@@ -14,7 +14,7 @@ beforeEach(async () => {
       formatted_address: "Rua irumu 57, São Paulo - SP"
     },
     schedule: [{
-      day: 0,
+      weekday: 0,
       hour: '14:00'
     }]
   })

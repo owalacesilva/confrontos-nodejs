@@ -27,7 +27,7 @@ const TeamSchema = new Schema({
     type: String,
     required: [true, 'Sport is required'],
     lowercase: true, 
-    enum: ['football', 'soccer', 'basketball', 'voleyball', 'futsal']
+    enum: ['football', 'soccer', 'society', 'basketball', 'voleyball', 'futsal']
   },
   gender: {
     type: String,
