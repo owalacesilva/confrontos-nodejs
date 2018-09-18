@@ -2,11 +2,17 @@ import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import mongoose, { Schema } from 'mongoose'
 import MongooseKeywords from 'mongoose-keywords'
+import MongooseSequence from 'mongoose-sequence'
 import { env } from '../../config'
 
 const roles = ['athleta', 'manager']
 
 const UserSchema = new Schema({
+  user_id: {
+    type: Number,
+    required: true,
+    unique: true
+  },
   email: {
     type: String,
     match: /^\S+@\S+\.\S+$/,
@@ -27,6 +33,14 @@ const UserSchema = new Schema({
     lowercase: true, 
     default: 'basic'
   },
+  gender: {
+    type: String,
+    required: [true, 'Gender is required'],
+    enum: ['male', 'female'],
+    lowercase: true, 
+    default: 'male'
+  },
+  registration_ids: [String],
   password: {
     type: String,
     required: true,
@@ -96,7 +110,7 @@ UserSchema.pre('save', function (next) {
 UserSchema.methods = {
   view (full) {
     let view = {}
-    let fields = ['id', 'display_name', 'picture']
+    let fields = ['id', 'display_name', 'picture', 'gender']
 
     if (full) {
       fields = [
@@ -124,6 +138,9 @@ UserSchema.statics = {
 }
 
 UserSchema.plugin(MongooseKeywords, { paths: ['email', 'display_name'] })
+
+const AutoIncrement = MongooseSequence(mongoose)
+UserSchema.plugin(AutoIncrement, { inc_field: 'user_id' })
 
 const model = mongoose.model('User', UserSchema)
 

@@ -62,8 +62,8 @@ InvitationSchema.pre('save', function(next) {
 InvitationSchema.post('save', function (doc, next) {
   if (this.wasNew) {
     doc.
-      populate({ path: 'user', select: 'display_name' })
-      .populate({ path: 'guest_user', select: 'display_name' })
+      populate({ path: 'user', select: 'display_name registration_ids' })
+      .populate({ path: 'guest_user', select: 'display_name registration_ids' })
       .populate({ path: 'team', select: 'display_name' })
       .populate({ path: 'guest_team', select: 'display_name' })
       .execPopulate()
@@ -96,8 +96,8 @@ InvitationSchema.post('save', function (doc, next) {
 InvitationSchema.post('save', function (doc, next) {
   if (!this.wasNew && doc.status != 'pending') {
     doc.
-       populate({ path: 'user', select: 'display_name' })
-      .populate({ path: 'guest_user', select: 'display_name' })
+       populate({ path: 'user', select: 'display_name registration_ids' })
+      .populate({ path: 'guest_user', select: 'display_name registration_ids' })
       .populate({ path: 'team', select: 'display_name address sport' })
       .populate({ path: 'guest_team', select: 'display_name' })
       .execPopulate()

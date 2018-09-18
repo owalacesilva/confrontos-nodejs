@@ -48,7 +48,7 @@ const config = {
       }
     }
   },
-  production: {
+  production: { 
     ip: process.env.IP || undefined,
     port: process.env.PORT || 8080,
     mongo: {
