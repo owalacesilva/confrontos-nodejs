@@ -19,7 +19,7 @@ export default (apiRoot, routes) => {
     app.use(morgan('dev'))
   }
 
-  const filename = path.join(root, `logs/api-${env}.log`);
+  const filename = path.join(root, `log/api-${env}.log`);
 
   const logger = new winston.Logger({
     transports: [
