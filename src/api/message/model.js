@@ -70,14 +70,6 @@ MessageSchema.methods = {
   }
 }
 
-MessageSchema.statics.newChatId = function(messageId) {
-  this.findById(messageId, function(error, message) {
-    message.setNext('chat_id', (err, doc) => {
-      if(err) console.log('Cannot increment the chat id', err)
-    })
-  })
-}
-
 const AutoIncrement = MongooseSequence(mongoose)
 MessageSchema.plugin(AutoIncrement, {
   inc_field: 'chat_id',

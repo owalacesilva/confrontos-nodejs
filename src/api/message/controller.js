@@ -1,18 +1,26 @@
 import { success, notFound } from '../../services/response/'
 import { Message } from '.'
 
-export const create = ({ bodymen: { body: { chat_id, sender, text } } }, res, next) =>
-  Message.findOne({ chat_id: chat_id })
-    .then((lastMessage) => {
+export const create = ({ bodymen: { body: { chat_id, text } }, user }, res, next) =>
+  Message.findOne({ chat_id }, null, { sort: { created_at: -1 } })
+    .then(notFound(res))
+    .then((message) => {
+      if (!message) next()
       let receiver;
-      if (sender === lastMessage.sender.toString()) {
-        receiver = lastMessage.receiver.toString()
+      if (user.id === message.sender.toString()) {
+        receiver = message.receiver.toString()
       } else {
-        receiver = lastMessage.sender.toString()
+        receiver = message.sender.toString()
       }
       return receiver 
     })
-    .then((receiver) => Message.create({ chat_id, sender, receiver, author: sender, message: { text } })
+    .then((receiver) => Message.create({ 
+        chat_id, 
+        sender: user._id, 
+        receiver, 
+        author: user._id, 
+        message: { text } 
+      })
       .then((message) => message.view(true))
       .then(success(res, 201))
       .catch(next)

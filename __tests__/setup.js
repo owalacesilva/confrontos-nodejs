@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import MongodbMemoryServer from 'mongodb-memory-server'
 import mongoose from '../src/services/mongoose'
+import { mongo } from '../src/config'
 
 EventEmitter.defaultMaxListeners = Infinity
 // jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
@@ -22,11 +23,8 @@ global.parseInt = parseInt
 global.parseFloat = parseFloat
 
 let mongod
-const opts = { 
-  config: {
-    useMongoClient: true, 
-    autoIndex: false 
-  }
+const defaults = {
+  debug: false
 }
 
 beforeAll(async () => {
@@ -37,7 +35,8 @@ beforeAll(async () => {
     }
   })
   const mongoUri = await mongod.getConnectionString()*/
-  const mongoUri = "mongodb://localhost/confrontos-server-test"
+  const mongoUri = mongo.uri
+  const opts = Object.assign({}, mongo.options)
   await mongoose.connect(mongoUri, opts, (err) => {
     if (err) console.error(err)
   })

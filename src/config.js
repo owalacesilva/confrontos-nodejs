@@ -39,7 +39,15 @@ const config = {
       }
     }
   },
-  test: { },
+  test: {
+    mongo: {
+      uri: 'mongodb://localhost:27017/confrontos-server-test',
+      options: {
+        useNewUrlParser: true, 
+        debug: false
+      }
+    }
+  },
   development: {
     mongo: {
       uri: 'mongodb://localhost:27017/confrontos-server-dev',
@@ -52,7 +60,10 @@ const config = {
     ip: process.env.IP || undefined,
     port: process.env.PORT || 8080,
     mongo: {
-      uri: process.env.MONGODB_URI || 'mongodb://localhost/confrontos-server'
+      uri: process.env.MONGODB_URI || 'mongodb://localhost/confrontos-server',
+      options: {
+        debug: false
+      }
     }
   }
 }
