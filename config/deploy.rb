@@ -13,7 +13,7 @@ set :branch, 'master'
 set :repo_path, "#{fetch(:deploy_to)}/repo"
 
 # Default value for :linked_files is []
-# append :linked_files, "config/secrets.json"
+append :linked_files, "config/secrets.json", ".env"
 
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/uploads"
@@ -21,10 +21,10 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/uplo
 # Default tmp deploy directory
 set :tmp_dir, '/tmp/capistrano'
 
-# set :npm_target_path, -> { release_path.join('subdir') } # default not set
-set :npm_flags, '--production --silent --no-progress' # default
-set :npm_roles, :all # default
-set :npm_env_variables, {} # default
+# set :yarn_target_path, -> { release_path.join('subdir') } # default not set
+set :yarn_flags, '--production --silent --no-progress' # default
+set :yarn_roles, :all # default
+set :yarn_env_variables, {} # default
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh

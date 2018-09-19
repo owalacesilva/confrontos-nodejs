@@ -1,16 +1,16 @@
 .DS_Store
 node_modules
-public
 .tmp
 .idea
-log/*.log
 dist
 docs
 .env
 npm-debug.log
+yarn-error.log
 .nyc_output
 coverage
 cassettes
 
-uploads/**/*
-!.gitkeep
+log
+public
+!public/uploads/.gitkeep
