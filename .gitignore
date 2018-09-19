@@ -11,6 +11,7 @@ yarn-error.log
 coverage
 cassettes
 
-log
-public
+log/**/*
+!log/.gitkeep
+public/uploads/**/*
 !public/uploads/.gitkeep
