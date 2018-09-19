@@ -5,7 +5,7 @@ import { Message } from './../message'
 import { mergeInvitationAttr } from './../../services/utils/merge'
 
 export const create = ({ bodymen: { body }, user }, res, next) =>
-  Invitation.create({ ...body, user: user.id })
+  Invitation.create({ ...body, user: user._id })
     .then((invitation) => {
       if (invitation && body.message && typeof body.message === 'string') {
         return Message.create({
@@ -29,9 +29,9 @@ export const create = ({ bodymen: { body }, user }, res, next) =>
     .then(success(res, 201))
     .catch(next)
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  Invitation.count(query)
-    .then(count => Invitation.find(query, select, cursor)
+export const index = ({ querymen: { query, select, cursor }, user }, res, next) =>
+  Invitation.count({ ...query, user: user._id })
+    .then(count => Invitation.find({ ...query, user: user._id }, select, cursor)
       .populate([{ 
         path: 'user', 
         select: 'display_name' 
@@ -53,23 +53,23 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
     .then(success(res))
     .catch(next)
 
-export const show = ({ params }, res, next) =>
-  Invitation.findById(params.id)
+export const show = ({ params, user }, res, next) =>
+  Invitation.findOne({ '_id': params.id, user: user._id })
     .then(notFound(res))
     .then((invitation) => invitation ? invitation.view() : null)
     .then(success(res))
     .catch(next)
 
-export const update = ({ bodymen: { body }, params }, res, next) =>
-  Invitation.findById(params.id)
+export const update = ({ bodymen: { body }, params, user }, res, next) =>
+  Invitation.findOne({ '_id': params.id, user: user._id })
     .then(notFound(res))
     .then((invitation) => invitation ? _.mergeWith(invitation, body, mergeInvitationAttr).save() : null)
     .then((invitation) => invitation ? invitation.view(true) : null)
     .then(success(res))
     .catch(next)
 
-export const destroy = ({ params }, res, next) =>
-  Invitation.findById(params.id)
+export const destroy = ({ params, user }, res, next) =>
+  Invitation.findOne({ '_id': params.id, user: user._id })
     .then(notFound(res))
     .then((invitation) => invitation ? invitation.remove() : null)
     .then(success(res, 204))

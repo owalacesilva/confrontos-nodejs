@@ -4,7 +4,12 @@ import { Notification } from '.'
 let notification, user
 
 beforeEach(async () => {
-  user = await User.create({ email: 'a@a.com', password: '123456' })
+  user = await User.create({ 
+    display_name: 'aaa', 
+    gender: 'male', 
+    email: 'a@a.com', 
+    password: '123456' 
+  })
   notification = await Notification.create({ 
     recipient: user.id, 
     information: "Notification created", 
@@ -38,6 +43,7 @@ describe('view', () => {
     const doc = await Notification.notify('invitation_created', {
       user: { display_name: 'test user' },
       guest_team: { display_name: 'test team' },
+      guest_user: { display_name: 'test guest user' },
       date: new Date(),
     }, { 
       invitation_id: user.id, 
