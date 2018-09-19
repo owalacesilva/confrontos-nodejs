@@ -66,11 +66,11 @@ ssh_options: {
   auth_methods: %w(publickey)
 }
 
-namespace :deploy do
-  desc 'Restart application'
-  task :restart do
-    invoke 'pm2:restart'
-  end
+#namespace :deploy do
+  #desc 'Restart application'
+  #task :restart do
+    #invoke 'pm2:restart'
+  #end
 
-  after :publishing, :restart   
-end
+  #after :publishing, :restart   
+#end
