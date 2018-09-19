@@ -10,7 +10,6 @@ const roles = ['athleta', 'manager']
 const UserSchema = new Schema({
   user_id: {
     type: Number,
-    required: true,
     unique: true
   },
   email: {
@@ -37,8 +36,7 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Gender is required'],
     enum: ['male', 'female'],
-    lowercase: true, 
-    default: 'male'
+    lowercase: true
   },
   registration_ids: [String],
   password: {
@@ -110,15 +108,18 @@ UserSchema.pre('save', function (next) {
 UserSchema.methods = {
   view (full) {
     let view = {}
-    let fields = ['id', 'display_name', 'picture', 'gender']
+    let fields = ['user_id', 'display_name', 'picture', 'gender']
 
     if (full) {
       fields = [
         ...fields, 
+        'id', 
         'email', 
         'role', 
-        'activities', 
+        'registration_ids', 
         'current_contract', 
+        'activities', 
+        'settings', 
         'created_at'
       ]
     }

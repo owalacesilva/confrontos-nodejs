@@ -6,6 +6,7 @@ let user
 beforeEach(async () => {
   user = await User.create({ 
     display_name: 'user', 
+    gender: 'male', 
     email: 'a@a.com', 
     password: '123456' 
   })
@@ -40,8 +41,9 @@ describe('view', () => {
   it('returns simple view', () => {
     const view = user.view()
     expect(view).toBeDefined()
-    expect(view.id).toBe(user.id)
+    expect(view.user_id).toBe(user.user_id)
     expect(view.display_name).toBe(user.display_name)
+    expect(view.gender).toBe(user.gender)
     expect(view.picture).toBe(user.picture)
   })
 
@@ -49,9 +51,15 @@ describe('view', () => {
     const view = user.view(true)
     expect(view).toBeDefined()
     expect(view.id).toBe(user.id)
+    expect(view.user_id).toBe(user.user_id)
     expect(view.display_name).toBe(user.display_name)
     expect(view.email).toBe(user.email)
+    expect(view.gender).toBe(user.gender)
     expect(view.picture).toBe(user.picture)
+    expect(view.registration_ids).toBe(user.registration_ids)
+    expect(view.current_contract).toBe(user.current_contract)
+    expect(view.activities).toBe(user.activities)
+    expect(view.settings).toBe(user.settings)
     expect(view.created_at).toEqual(user.created_at)
   })
 })
