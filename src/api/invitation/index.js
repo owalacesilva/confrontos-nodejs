@@ -7,7 +7,15 @@ import { schema } from './model'
 export Invitation, { schema } from './model'
 
 const router = new Router()
-const { guest_user, team, guest_team, date, start_at, status } = schema.tree
+const { 
+  guest_user, 
+  team, 
+  guest_team, 
+  host_team, 
+  visiting_team, 
+  date, 
+  start_at, 
+} = schema.tree
 
 /**
  * @api {post} /invitations Create invitation
@@ -28,6 +36,8 @@ router.post('/',
     guest_user, 
     team, 
     guest_team, 
+    host_team, 
+    visiting_team, 
     date, 
     start_at, 
     message: { 

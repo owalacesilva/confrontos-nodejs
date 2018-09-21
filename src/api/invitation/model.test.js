@@ -25,11 +25,13 @@ beforeEach(async () => {
   })
   invitation = await Invitation.create({ 
     user: user.id,
-    team: team.id,
     guest_user: user.id,
+    team: team.id,
     guest_team: team.id,
-    date: new Date(), 
-    start_at: new Date()
+    host_team: team.id,
+    visiting_team: team.id,
+    date: new Date(2019, 11, 12), 
+    start_at: new Date(2019, 11, 12, 0, 3, 3)
   })
 })
 
@@ -43,6 +45,8 @@ describe('view', () => {
     expect(String(view.guest_user)).toBe(user.id)
     expect(String(view.team)).toBe(team.id)
     expect(String(view.guest_team)).toBe(team.id)
+    expect(String(view.host_team)).toBe(team.id)
+    expect(String(view.visiting_team)).toBe(team.id)
     expect(view.date).toBe(invitation.date)
     expect(view.start_at).toBe(invitation.start_at)
     expect(view.created_at).toBeTruthy()

@@ -9,15 +9,25 @@ const InvitationSchema = new Schema({
     required: [true, 'User is required'],
     ref: 'User'
   },
+  guest_user: {
+    type: Schema.ObjectId,
+    required: [true, 'Guest User is required'],
+    ref: 'User'
+  },
   team: {
     type: Schema.ObjectId,
     required: [true, 'Team is required'],
     ref: 'Team'
   },
-  guest_user: {
+  host_team: {
     type: Schema.ObjectId,
-    required: [true, 'Guest User is required'],
-    ref: 'User'
+    required: [true, 'Host Team is required'],
+    ref: 'Team'
+  },
+  visiting_team: {
+    type: Schema.ObjectId,
+    required: [true, 'Visiting Team is required'],
+    ref: 'Team'
   },
   guest_team: {
     type: Schema.ObjectId,
@@ -62,26 +72,13 @@ InvitationSchema.pre('save', function(next) {
 InvitationSchema.post('save', function (doc, next) {
   if (this.wasNew) {
     doc.
-      populate({ path: 'user', select: 'display_name registration_ids' })
-      .populate({ path: 'guest_user', select: 'display_name registration_ids' })
-      .populate({ path: 'team', select: 'display_name' })
-      .populate({ path: 'guest_team', select: 'display_name' })
+      populate({ path: 'user', select: 'display_name picture registration_ids' })
+      .populate({ path: 'guest_user', select: 'display_name picture registration_ids' })
+      .populate({ path: 'team', select: 'display_name pictures' })
+      .populate({ path: 'guest_team', select: 'display_name pictures' })
+      .populate({ path: 'host_team', select: 'display_name pictures' })
+      .populate({ path: 'visiting_team', select: 'display_name pictures' })
       .execPopulate()
-      /*.then((invitation) => {
-        return Message.create({
-          sender: invitation.user._id,
-          receiver: invitation.guest_user._id,
-          author: invitation.user._id,
-          message: { text: "Boa noite" },
-        })
-        .then((message) => {
-          message.setNext('chat_id', (err, doc) => {
-            if(err) console.log('Cannot increment the chat id', err)
-          })
-          return invitation
-        })
-        .catch(next)
-      })*/
       .then((invitation) => {
         Notification.notify('invitation_created', invitation, { 
           invitation_id: invitation._id, 
@@ -96,18 +93,30 @@ InvitationSchema.post('save', function (doc, next) {
 InvitationSchema.post('save', function (doc, next) {
   if (!this.wasNew && doc.status != 'pending') {
     doc.
-       populate({ path: 'user', select: 'display_name registration_ids' })
-      .populate({ path: 'guest_user', select: 'display_name registration_ids' })
-      .populate({ path: 'team', select: 'display_name address sport' })
-      .populate({ path: 'guest_team', select: 'display_name' })
+      populate({ path: 'user', select: 'display_name picture registration_ids' })
+      .populate({ path: 'guest_user', select: 'display_name picture registration_ids' })
+      .populate({ path: 'team', select: 'display_name pictures' })
+      .populate({ path: 'guest_team', select: 'display_name pictures' })
+      .populate({ path: 'host_team', select: 'display_name pictures players address sport' })
+      .populate({ path: 'visiting_team', select: 'display_name pictures players' })
       .execPopulate()
       .then((invitation) => {
         if (invitation.status === 'accepted') {
+          const { host_team, visiting_team } = invitation
+          let numPlayers = Math.max(host_team.players.length, visiting_team.players.length), lineups = []
+          for (let i = 0; i < numPlayers; i++) {
+            lineups.push({
+              home_team: invitation.host_team.players[i], 
+              visiting_team: invitation.visiting_team.players[i],
+            })
+          }
+
           return Match.create({ 
-            home_team: invitation.team._id, 
-            visiting_team: invitation.guest_team._id, 
-            address: invitation.team.address, 
-            sport: invitation.team.sport, 
+            home_team: invitation.host_team._id, 
+            visiting_team: invitation.visiting_team._id, 
+            lineups: lineups,
+            address: invitation.host_team.address, 
+            sport: invitation.host_team.sport, 
             date: invitation.date, 
             start_at: invitation.start_at 
           }).then(async (match) => {
@@ -141,6 +150,8 @@ InvitationSchema.methods = {
       guest_user: this.guest_user,
       team: this.team,
       guest_team: this.guest_team,
+      host_team: this.host_team,
+      visiting_team: this.visiting_team,
       match: this.match,
       date: this.date,
       status: this.status,

@@ -41,6 +41,12 @@ export const index = ({ querymen: { query, select, cursor }, user }, res, next) 
       }, {
         path: 'guest_team', 
         select: 'display_name pictures' 
+      }, { 
+        path: 'host_team', 
+        select: 'display_name pictures' 
+      }, {
+        path: 'visiting_team', 
+        select: 'display_name pictures' 
       },{
         path: 'match',
         select: 'home_team visiting_team'

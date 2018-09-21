@@ -32,11 +32,13 @@ beforeEach(async () => {
   })
   invitation = await Invitation.create({ 
     user: user.id,
-    team: team.id,
     guest_user: user.id,
+    team: team.id,
     guest_team: team.id,
-    date: new Date(), 
-    start_at: new Date()
+    host_team: team.id,
+    visiting_team: team.id,
+    date: new Date(2019, 11, 12), 
+    start_at: new Date(2019, 11, 12, 0, 3, 3)
   })
 })
 
@@ -46,11 +48,14 @@ describe('Invitation test suite', () => {
       .post(`${apiRoot}`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({ 
+        user: user.id,
         guest_user: user.id,
         team: team.id,
         guest_team: team.id,
-        date: new Date(), 
-        start_at: new Date()
+        host_team: team.id,
+        visiting_team: team.id,
+        date: new Date(2019, 11, 12), 
+        start_at: new Date(2019, 11, 12, 0, 3, 3)
       })
     expect(status).toBe(201)
     expect(typeof body).toEqual('object')

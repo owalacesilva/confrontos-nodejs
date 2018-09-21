@@ -148,7 +148,7 @@ NotificationSchema.statics = {
     const message = {
       priority: 'high', 
       collapse_key: 'com.confrontos', 
-      dry_run: env === 'test' ? true: false, // debug
+      dry_run: env === 'test' ? true: false, // debug      
       // to: 'dXQmCN_3iJ8:APA91bG0HZe4nacygq1l0hLhdLnQVVrKf0CkS3nV1KG8GGVdAJxcAd7rsxCgEte755sECLa2QT5TRrvAZRwlzCJzueoYVcJKL5Xt2JPgGeyESNtgxxXpDOeJOmL1afHtSEFqcn_iyIVz', 
       registration_ids: regIds, 
       data: { 
@@ -160,10 +160,10 @@ NotificationSchema.statics = {
   
     const fcm = new FCM(fcmApiKey)
     fcm.send(message, (err, response) => {
-      if (env === 'test') {
-        console.log('Notification:', response, information)
-      }
-      if(!err && response.success > 0) {
+      env === 'test' && console.log("Notification sent:", information)
+      if(!err && response && response.success > 0) {
+        env === 'test' && console.log("Response received:", response)
+        
         notif.push_sent = true
         notif.save()
       }
