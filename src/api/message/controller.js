@@ -27,18 +27,18 @@ export const create = ({ bodymen: { body: { chat_id, text } }, user }, res, next
     )
     .catch(next)
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  Message.count(query)
-    .then(count => Message.find(query, select, cursor)
+export const index = ({ querymen: { query, select, cursor }, user }, res, next) =>
+  Message.count({ ...query, $or: [{ sender: user._id }, { receiver: user._id }] })
+    .then(count => Message.find({ ...query, $or: [{ sender: user._id }, { receiver: user._id }] }, select, cursor)
       .populate([{ 
         path: 'sender', 
-        select: 'display_name'
+        select: 'display_name picture'
       }, { 
         path: 'receiver', 
-        select: 'display_name'
+        select: 'display_name picture'
       }, { 
         path: 'author', 
-        select: 'display_name'
+        select: 'display_name picture'
       }])
       .then((messages) => ({
         count,

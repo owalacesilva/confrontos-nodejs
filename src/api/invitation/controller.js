@@ -30,11 +30,11 @@ export const create = ({ bodymen: { body }, user }, res, next) =>
     .catch(next)
 
 export const index = ({ querymen: { query, select, cursor }, user }, res, next) =>
-  Invitation.count({ ...query, user: user._id })
-    .then(count => Invitation.find({ ...query, user: user._id }, select, cursor)
+  Invitation.count({ ...query, $or: [{ user: user._id }, { guest_user: user._id }] })
+    .then(count => Invitation.find({ ...query, $or: [{ user: user._id }, { guest_user: user._id }] }, select, cursor)
       .populate([{ 
         path: 'user', 
-        select: 'display_name' 
+        select: 'display_name picture' 
       }, { 
         path: 'team', 
         select: 'display_name pictures' 
@@ -54,7 +54,7 @@ export const index = ({ querymen: { query, select, cursor }, user }, res, next) 
     .catch(next)
 
 export const show = ({ params, user }, res, next) =>
-  Invitation.findOne({ '_id': params.id, user: user._id })
+  Invitation.findOne({ '_id': params.id, $or: [{ user: user._id }, { guest_user: user._id }] })
     .then(notFound(res))
     .then((invitation) => invitation ? invitation.view() : null)
     .then(success(res))

@@ -5,7 +5,12 @@ import { Invitation } from '.'
 let invitation, team, user
 
 beforeEach(async () => {
-  user = await User.create({ email: 'a@a.com', password: '123456' })
+  user = await User.create({ 
+    display_name: 'user', 
+    gender: 'male', 
+    email: 'a@a.com', 
+    password: '123456' 
+  })
   team = await Team.create({
     display_name: "Team name",
     sport: "soccer",

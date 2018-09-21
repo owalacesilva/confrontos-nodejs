@@ -1,5 +1,6 @@
 import FCM from 'fcm-push'
 import mongoose, { Schema } from 'mongoose'
+import moment from 'moment'
 import { fcmApiKey, env } from './../../config'
 
 const NotificationSchema = new Schema({
@@ -89,7 +90,7 @@ NotificationSchema.statics = {
     } else if (action === 'invitation_status_changed') {
       newDoc = { recipient: params.recipient, anchor: 'Match' }
       if (params.status === 'accepted') {
-        information = `<div><b>${docOrigin.guest_team.display_name}</b> aceitou seu desafio para a partida de <b>${docOrigin.date}</b></div>`
+        information = `<div><b>${docOrigin.guest_team.display_name}</b> aceitou seu desafio para a partida de <b>${moment(docOrigin.date).format("DD/MM")}</b></div>`
         regIds = docOrigin.user.registration_ids
         notification = {
           title: "Seu convite foi aceito", 
@@ -99,7 +100,7 @@ NotificationSchema.statics = {
         }
         newDoc = { ...newDoc, information,  payload: { match_id: params.match_id } }
       } else if (params.status === 'refused') {
-        information = `<div><b>${docOrigin.guest_team.display_name}</b> recusou seu desafio para a partida de <b>${docOrigin.date}</b></div>`
+        information = `<div><b>${docOrigin.guest_team.display_name}</b> recusou seu desafio para a partida de <b>${moment(docOrigin.date).format("DD/MM")}</b></div>`
         regIds = docOrigin.user.registration_ids
         notification = {
           title: "Seu convite foi recusado", 

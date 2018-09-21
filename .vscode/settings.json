@@ -1,0 +1,4 @@
+{
+  "extensions.enabled": ["ms-vscode.csharp", ...enabled],
+  "extensions.disabled": [/*whatever extensions wanted to be*/...disabled],
+}
