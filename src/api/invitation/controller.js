@@ -67,7 +67,7 @@ export const show = ({ params, user }, res, next) =>
     .catch(next)
 
 export const update = ({ bodymen: { body }, params, user }, res, next) =>
-  Invitation.findOne({ '_id': params.id, user: user._id })
+  Invitation.findOne({ '_id': params.id, $or: [{ user: user._id }, { guest_user: user._id }] })
     .then(notFound(res))
     .then((invitation) => invitation ? _.mergeWith(invitation, body, mergeInvitationAttr).save() : null)
     .then((invitation) => invitation ? invitation.view(true) : null)
