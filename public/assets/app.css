@@ -1,0 +1,12 @@
+body {
+  font-family: 'Nunito Sans'
+}
+
+.navbar-brand {
+  height: auto;
+  padding: 0px 15px;
+}
+
+.navbar-brand img {
+  max-height: 70px;
+}

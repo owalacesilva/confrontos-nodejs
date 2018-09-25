@@ -269,7 +269,7 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
 
-argparse@^1.0.7:
+argparse@^1.0.2, argparse@^1.0.7:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
   dependencies:
@@ -1524,7 +1524,7 @@ component-emitter@^1.2.0, component-emitter@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
 
-compressible@~2.0.14:
+compressible@^2.0.2, compressible@~2.0.14:
   version "2.0.15"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.15.tgz#857a9ab0a7e5a07d8d837ed43fe2defff64fe212"
   dependencies:
@@ -1920,6 +1920,10 @@ ecdsa-sig-formatter@1.0.10:
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
+
+ejs@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
 ejs@~0.8.5:
   version "0.8.8"
@@ -2760,6 +2764,10 @@ has@^1.0.1:
   resolved "https://registry.yarnpkg.com/has/-/has-1.0.3.tgz#722d7cbfc1f6aa8241f16dd814e011e1f41e8796"
   dependencies:
     function-bind "^1.1.1"
+
+hike@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hike/-/hike-1.0.2.tgz#59aa053e8939163b2b1faf891a4264290a64867a"
 
 hoek@2.x.x:
   version "2.16.3"
@@ -3864,6 +3872,10 @@ lodash@4.17.11, lodash@^4.11.1, lodash@^4.11.2, lodash@^4.13.1, lodash@^4.14.0, 
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
+lodash@^3.10.1:
+  version "3.10.1"
+  resolved "http://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+
 lolex@^2.2.0, lolex@^2.3.2:
   version "2.7.5"
   resolved "https://registry.yarnpkg.com/lolex/-/lolex-2.7.5.tgz#113001d56bfc7e02d56e36291cc5c413d1aa0733"
@@ -4036,7 +4048,7 @@ micromatch@^3.1.10, micromatch@^3.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-"mime-db@>= 1.36.0 < 2", mime-db@~1.36.0:
+"mime-db@>= 1.36.0 < 2", mime-db@^1.6.0, mime-db@~1.36.0:
   version "1.36.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.36.0.tgz#5020478db3c7fe93aad7bbcc4dcf869c43363397"
 
@@ -4068,6 +4080,26 @@ mimelib@^0.3.0:
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
+
+mimoza@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/mimoza/-/mimoza-1.0.0.tgz#d74aa4fe08932f005e430bdc7bfcfa95fcab4e62"
+  dependencies:
+    mime-db "^1.6.0"
+
+mincer@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/mincer/-/mincer-1.5.1.tgz#1bd87f20c728440f46cf408bae7333748d2ed0f9"
+  dependencies:
+    argparse "^1.0.2"
+    compressible "^2.0.2"
+    hike "^1.0.0"
+    lodash "^3.10.1"
+    mimoza "^1.0.0"
+    mkdirp "^0.5.1"
+    pako "^1.0.3"
+    shellwords "^0.1.0"
+    source-map "^0.5.3"
 
 minimatch@^3.0.0, minimatch@^3.0.2, minimatch@^3.0.3, minimatch@^3.0.4:
   version "3.0.4"
@@ -4573,6 +4605,10 @@ package-json@^4.0.0:
     registry-auth-token "^3.0.1"
     registry-url "^3.0.3"
     semver "^5.1.0"
+
+pako@^1.0.3:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
 papercut@^0.0.6:
   version "0.0.6"
@@ -5345,7 +5381,7 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
-shellwords@^0.1.1:
+shellwords@^0.1.0, shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
 

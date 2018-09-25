@@ -12,6 +12,11 @@ const UserSchema = new Schema({
     type: Number,
     unique: true
   },
+  sponsor_id: {
+    type: Schema.ObjectId,
+    required: false,
+    ref: 'User'
+  },
   email: {
     type: String,
     match: /^\S+@\S+\.\S+$/,

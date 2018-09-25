@@ -1,0 +1,1 @@
+--include src/assets/javascripts --include src/assets/stylesheets --output public/assets

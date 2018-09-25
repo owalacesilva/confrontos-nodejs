@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+		<title>Confrontos</title>
+
+		<!-- CSS (load bootstrap from a CDN) -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<style>
+			@font-face { font-family: 'Source Sans Pro'; font-style: normal; font-weight: 300; font-display: auto; src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(https://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGNbE_oMaV8t2eFeISPpzbdE.woff) format('woff'); } @font-face { font-family: 'Source Sans Pro'; font-style: normal; font-weight: 400; font-display: auto; src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff'); } @font-face { font-family: 'Source Sans Pro'; font-style: normal; font-weight: 600; font-display: auto; src: local('Source Sans Pro Semibold'), local('SourceSansPro-Semibold'), url(https://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGJ6-ys_j0H4QL65VLqzI3wI.woff) format('woff'); } @font-face { font-family: 'Source Sans Pro'; font-style: italic; font-weight: 400; font-display: auto; src: local('Source Sans Pro Italic'), local('SourceSansPro-It'), url(https://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoMzNrcjQuD0pTu1za2FULaMs.woff) format('woff'); } @font-face { font-family: 'Catamaran'; font-style: normal; font-weight: 400; font-display: auto; src: local('Catamaran'), local('Catamaran-Regular'), url(https://fonts.gstatic.com/s/catamaran/v1/iVYgK2bOLvZcSxr0ITOecpBw1xU1rKptJj_0jans920.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215; } @font-face { font-family: 'Catamaran'; font-style: normal; font-weight: 700; font-display: auto; src: local('Catamaran Bold'), local('Catamaran-Bold'), url(https://fonts.gstatic.com/s/catamaran/v1/PpgVtUHUdnBZYNpnzGbScxampu5_7CjHW5spxoeN3Vs.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215; } @font-face { font-family: 'Catamaran'; font-style: normal; font-weight: 700; font-display: auto; src: local('Catamaran Bold'), local('Catamaran-Bold'), url(https://fonts.gstatic.com/l/font?kit=PpgVtUHUdnBZYNpnzGbSc6SFsKGqWoCZdyCfKibzrG3-WNwQ_1wFoOPmFoGjG5-8mvTD2jCNI8H-WdWZyQihOw&skey=57b3a2830111dbc0&v=v1) format('woff2'); } @font-face { font-family: 'Nunito Sans'; font-style: normal; font-weight: 400; font-display: auto; src: local('Nunito Sans Regular'), local('NunitoSans-Regular'), url(https://fonts.gstatic.com/s/nunitosans/v2/iJ4p9wO0GDKJ-D5teKuZqogp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215; } @font-face { font-family: 'Nunito Sans'; font-style: normal; font-weight: 700; font-display: auto; src: local('Nunito Sans Bold'), local('NunitoSans-Bold'), url(https://fonts.gstatic.com/s/nunitosans/v2/XvilrNtBQKRMeiqSPzEFHf79_ZuUxCigM2DespTnFaw.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215; }
+		</style>
+		<link rel="stylesheet" href="assets/app.css">
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-default">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">
+							<img src="assets/img/brand.png" /> Confrontos
+						</a>
+					</div>
+				</div><!-- /.container-fluid -->
+			</nav>
+		</header>
+		<div>
+			<div class="container">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-lg-6 col-lg-offset-3">
+							<div class="panel panel-default">
+                <div class="panel-body">
+                  <h4><strong><%= user.display_name %></strong>, convidou você para participar do confrontos</h4>
+									<form id="form-signup">
+										<div class="form-group">
+											<input type="text" autocomplete="name" autofocus="true" class="form-control" name="display_name" placeholder="Seu Nome" required>
+										</div>
+										<div class="form-group">
+											<input type="email" autocomplete="email" class="form-control" name="email" placeholder="Seu e-mail" required>
+										</div>
+										<div class="form-group">
+											<input type="email" autocomplete="email" class="form-control" name="cemail" placeholder="Digite novamente seu email" required>
+										</div>
+                    <div class="form-group">
+                      <label class="control-label">Sexo</label>
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="gender" value="male" /> Masculino
+                        </label>
+                        <label>
+                          <input type="radio" name="gender" value="female" /> Feminino
+                        </label>
+                      </div>
+                    </div>
+										<div class="form-group">
+											<input type="password" autocomplete="current-password" class="form-control" name="password" placeholder="Senha" required>
+										</div>
+										<button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    <footer></footer>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="assets/js/invite-page.js"></script>
+	</body>
+</html>
