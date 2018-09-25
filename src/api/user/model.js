@@ -4,6 +4,8 @@ import mongoose, { Schema } from 'mongoose'
 import MongooseKeywords from 'mongoose-keywords'
 import MongooseSequence from 'mongoose-sequence'
 import { env } from '../../config'
+import { sendMail } from './../../services/mailer'
+import mailTemp from './../../assets/mail/welcome'
 
 const roles = ['athleta', 'manager']
 
@@ -99,6 +101,20 @@ UserSchema.path('email').set(function (email) {
 })
 
 UserSchema.pre('save', function (next) {
+  if (this.isNew && env === 'production') {
+    const { display_name, email, password } = this
+    sendMail({
+      name: display_name, 
+      email: email, 
+      subject: mailTemp['pt-br'].subject({
+        user: { display_name, email, password }
+      }),
+      content: mailTemp['pt-br'].content({
+        user: { display_name, email, password }
+      })
+    })
+  }
+
   if (!this.isModified('password')) return next()
 
   /* istanbul ignore next */
