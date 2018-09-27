@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import randtoken from 'rand-token'
 import mongoose, { Schema } from 'mongoose'
 import MongooseKeywords from 'mongoose-keywords'
 import MongooseSequence from 'mongoose-sequence'
@@ -42,10 +43,14 @@ const UserSchema = new Schema({
   gender: {
     type: String,
     required: [true, 'Gender is required'],
-    enum: ['male', 'female'],
-    lowercase: true
+    enum: ['male', 'female', 'undefined'],
+    lowercase: true, 
+    default: 'undefined'
   },
-  registration_ids: [String],
+  registration_ids: {
+    type: [String],
+    default: []
+  },
   password: {
     type: String,
     required: true,
@@ -59,6 +64,10 @@ const UserSchema = new Schema({
   picture: {
     type: String,
     trim: true
+  },
+  providers: {
+    facebook: String,
+    google: String
   },
   activities: [{
     activity: {
@@ -156,7 +165,30 @@ UserSchema.methods = {
 }
 
 UserSchema.statics = {
-  roles
+  roles,
+
+  findOrCreateFromProvider ({ provider, id, email, name, picture }) {
+    const User = this
+
+    return this.findOne({ $or: [{ [`providers.${provider}`]: id }, { email }] }).then((user) => {
+      if (user) {
+        user.providers[provider] = id
+        user.display_name = name
+        user.picture = picture
+        return user.save()
+      } else {
+        const password = randtoken.generate(16)
+
+        return User.create({ 
+          providers: { [provider]: id }, 
+          email, 
+          password, 
+          display_name: name, 
+          picture
+        })
+      }
+    })
+  }
 }
 
 UserSchema.plugin(MongooseKeywords, { paths: ['email', 'display_name'] })

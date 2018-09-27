@@ -84,6 +84,7 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "sendgrid": "^4.0.2",
-    "slug": "^0.9.1"
+    "slug": "^0.9.1",
+    "socket.io": "^2.1.1"
   }
 }

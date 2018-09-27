@@ -10,27 +10,34 @@ const app = () => express(apiRoot, routes)
 let user
 
 beforeEach(async () => {
-  user = await User.create({ display_name: 'user', email: 'a@a.com', password: '123456' })
+  user = await User.create({ 
+    display_name: 'user', 
+    gender: 'male', 
+    email: 'a@a.com', 
+    password: '123456',
+    registration_ids: ['1234567890'] 
+  })
 })
 
 describe('Auth test suite', () => {
   test('POST /auth 201 (master)', async () => {
     const { status, body } = await request(app())
-      .post('/')
-      // .query({ access_token: masterKey })
+      .post(`${apiRoot}`)
       .auth('a@a.com', '123456')
+      .send({ registration_ids: ["1234567890"] })
     expect(status).toBe(201)
     expect(typeof body).toBe('object')
     expect(typeof body.token).toBe('string')
     expect(typeof body.user).toBe('object')
     expect(body.user.id).toBe(user.id)
     expect(await verify(body.token)).toBeTruthy()
+    expect(body.user.registration_ids[0]).toBe('1234567890')
+    expect(body.user.registration_ids.length).toBeGreaterThanOrEqual(1)
   })
   
   test('POST /auth 400 (master) - invalid email', async () => {
     const { status, body } = await request(app())
-      .post('/')
-      // .query({ access_token: masterKey })
+      .post(`${apiRoot}`)
       .auth('invalid', '123456')
     expect(status).toBe(400)
     expect(typeof body).toBe('object')
@@ -39,7 +46,7 @@ describe('Auth test suite', () => {
   
   test('POST /auth 400 (master) - invalid password', async () => {
     const { status, body } = await request(app())
-      .post('/')
+      .post(`${apiRoot}`)
       // .query({ access_token: masterKey })
       .auth('a@a.com', '123')
     expect(status).toBe(400)
@@ -49,7 +56,7 @@ describe('Auth test suite', () => {
   
   test('POST /auth 401 (master) - user does not exist', async () => {
     const { status } = await request(app())
-      .post('/')
+      .post(`${apiRoot}`)
       // .query({ access_token: masterKey })
       .auth('b@b.com', '123456')
     expect(status).toBe(401)
@@ -57,7 +64,7 @@ describe('Auth test suite', () => {
   
   test('POST /auth 401 (master) - wrong password', async () => {
     const { status } = await request(app())
-      .post('/')
+      .post(`${apiRoot}`)
       // .query({ access_token: masterKey })
       .auth('a@a.com', '654321')
     expect(status).toBe(401)
@@ -65,8 +72,8 @@ describe('Auth test suite', () => {
   
   test('POST /auth 401 (master) - missing access_token', async () => {
     const { status } = await request(app())
-      .post('/')
-      .auth('a@a.com', '123456')
+      .post(`${apiRoot}`)
+      // .auth('a@a.com', '123456')
     expect(status).toBe(401)
   })
   

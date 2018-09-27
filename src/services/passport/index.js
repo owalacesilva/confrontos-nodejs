@@ -4,6 +4,8 @@ import { BasicStrategy } from 'passport-http'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import { jwtSecret, masterKey } from '../../config'
+import * as facebookService from '../facebook'
+import * as googleService from '../google'
 import User, { schema } from '../../api/user/model'
 
 export const password = () => (req, res, next) =>
@@ -33,6 +35,12 @@ export const token = ({ required, roles = User.roles } = {}) => (req, res, next)
     })
   })(req, res, next)
 
+export const facebook = () => 
+  passport.authenticate('facebook', { session: false })
+
+export const google = () => 
+  passport.authenticate('google', { session: false })
+
 passport.use('password', new BasicStrategy((email, password, done) => {
   const userSchema = new Schema({ email: schema.tree.email, password: schema.tree.password })
 
@@ -50,6 +58,24 @@ passport.use('password', new BasicStrategy((email, password, done) => {
       return null
     }).catch(err => done(err))
   })
+}))
+
+passport.use('facebook', new BearerStrategy((token, done) => {
+  facebookService.getUser(token).then((facebookUser) => {
+    return User.findOrCreateFromProvider(facebookUser)
+  }).then((user) => {
+    done(null, user)
+    return null
+  }).catch(done)
+}))
+
+passport.use('google', new BearerStrategy((token, done) => {
+  googleService.getUser(token).then((googleUser) => {
+    return User.findOrCreateFromProvider(googleUser)
+  }).then((user) => {
+    done(null, user)
+    return null
+  }).catch(done)
 }))
 
 /**
