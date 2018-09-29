@@ -7,6 +7,7 @@ import match from './match'
 import invitation from './invitation'
 import notification from './notification'
 import message from './message'
+import feedNews from './feed-news'
 
 const router = new Router()
 
@@ -41,5 +42,6 @@ router.use('/matches', match)
 router.use('/invitations', invitation)
 router.use('/notifications', notification)
 router.use('/messages', message)
+router.use('/feed', feedNews)
 
 export default router
