@@ -62,6 +62,14 @@ app.get('/congratulations', (req, res, next) =>
   res.render('pages/congratulations')
 )
 
+app.get('/politica-privacidade', (req, res, next) => 
+  res.render('legals/privacy')
+)
+
+app.get('/termos-uso', (req, res, next) => 
+  res.render('legals/terms')
+)
+
 mongoose.connect(mongo.uri)
 mongoose.Promise = Promise
 
