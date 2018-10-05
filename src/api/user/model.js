@@ -84,6 +84,14 @@ const UserSchema = new Schema({
     value: {
       type: Schema.Types.Mixed
     },
+  }],
+  followers: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: Schema.ObjectId,
+    ref: 'User'
   }]
 }, {
   timestamps: {

@@ -172,7 +172,7 @@ describe('User test suite', () => {
     expect(body.param).toBe('role')
   })
   
-  test('PUT /users/me 200', async () => {
+  /*test('PUT /users/me 200', async () => {
     const { status, body } = await request(app())
       .put(`${apiRoot}/me`)
       .set('Authorization', `Bearer ${userToken1}`)
@@ -206,7 +206,7 @@ describe('User test suite', () => {
   
   test('PUT /users/me/password 200', async () => {
     const { status, body } = await request(app())
-      .put('/me/password')
+      .put(`${apiRoot}/me/password`)
       .set('Authorization', `Bearer ${userToken1}`)
       .send({ password: '654321' })
     expect(status).toBe(200)
@@ -217,7 +217,7 @@ describe('User test suite', () => {
   
   test('PUT /users/me/password 400 - invalid password', async () => {
     const { status, body } = await request(app())
-      .put('/me/password')
+      .put(`${apiRoot}/me/password`)
       .set('Authorization', `Bearer ${userToken1}`)
       .send({ password: '321' })
     expect(status).toBe(400)
@@ -227,8 +227,52 @@ describe('User test suite', () => {
   
   test('PUT /users/me/password 401', async () => {
     const { status } = await request(app())
-      .put('/me/password')
+      .put(`${apiRoot}/me/password`)
       .send({ password: '654321' })
+    expect(status).toBe(401)
+  })*/
+
+  test('POST /users/follow 201', async () => {
+    const { status } = await request(app())
+      .post(`${apiRoot}/follow`)
+      .set('Authorization', `Bearer ${userToken1}`)
+      .send({ user_id: user2.user_id })
+    expect(status).toBe(201)
+  })
+
+  test('POST /users/follow 404', async () => {
+    const { status } = await request(app())
+      .post(`${apiRoot}/follow`)
+      .set('Authorization', `Bearer ${userToken1}`)
+    expect(status).toBe(404)
+  })
+
+  test('POST /users/follow 401', async () => {
+    const { status } = await request(app())
+      .post(`${apiRoot}/follow`)
+      .send({ user_id: user2.user_id })
+    expect(status).toBe(401)
+  })
+
+  test('DELETE /users/unfollow 201', async () => {
+    const { status } = await request(app())
+      .delete(`${apiRoot}/unfollow`)
+      .set('Authorization', `Bearer ${userToken1}`)
+      .send({ user_id: user2.user_id })
+    expect(status).toBe(201)
+  })
+
+  test('DELETE /users/unfollow 404', async () => {
+    const { status } = await request(app())
+      .delete(`${apiRoot}/unfollow`)
+      .set('Authorization', `Bearer ${userToken1}`)
+    expect(status).toBe(404)
+  })
+
+  test('DELETE /users/unfollow 401', async () => {
+    const { status } = await request(app())
+      .delete(`${apiRoot}/unfollow`)
+      .send({ user_id: user2.user_id })
     expect(status).toBe(401)
   })
 })

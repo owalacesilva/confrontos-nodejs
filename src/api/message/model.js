@@ -41,8 +41,8 @@ const MessageSchema = new Schema({
     updatedAt: 'updated_at'
   },
   toJSON: {
-    virtuals: true
-    //transform: (obj, ret) => { delete ret._id }
+    virtuals: true 
+    // transform: (obj, ret) => { delete ret._id }
   }
 })
 

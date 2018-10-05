@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy } from './controller'
+import { index, showMe, show, create, update, updatePassword, destroy, follow, unfollow } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
@@ -36,6 +36,32 @@ router.get('/',
 router.get('/me',
   token({ required: true }),
   showMe)
+
+/**
+ * @api {get} /users/me Retrieve current user
+ * @apiName RetrieveCurrentUser
+ * @apiGroup User
+ * @apiPermission user
+ * @apiParam {String} access_token User access_token.
+ * @apiSuccess {Object} user User's data.
+ */
+router.post('/follow',
+  token({ required: true }),
+  body({ user_id, team_id: Number }),
+  follow)
+
+/**
+ * @api {get} /users/me Retrieve current user
+ * @apiName RetrieveCurrentUser
+ * @apiGroup User
+ * @apiPermission user
+ * @apiParam {String} access_token User access_token.
+ * @apiSuccess {Object} user User's data.
+ */
+router.delete('/unfollow',
+  token({ required: true }),
+  body({ user_id, team_id: Number }),
+  unfollow)
 
 /**
  * @api {get} /users/:user_id Retrieve user
@@ -76,5 +102,5 @@ router.post('/',
     registration_ids
   }),
   create)
-  
+
 export default router

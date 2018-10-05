@@ -91,3 +91,29 @@ export const destroy = ({ params }, res, next) =>
     .then((user) => user ? user.remove() : null)
     .then(success(res, 204))
     .catch(next)
+
+export const follow = ({ bodymen: { body: { user_id, team_id } }, user }, res, next) => 
+  User.findOne({ user_id })
+    .then(notFound(res))
+    .then((targetUser) => {
+      if (!targetUser) return null
+      return User.findByIdAndUpdate(user._id, {
+          $addToSet: { following: { user: targetUser._id } }
+        }, { new: true })
+        .catch(next)
+    })
+    .then(success(res, 201))
+    .catch(next)
+
+export const unfollow = ({ bodymen: { body: { user_id, team_id } }, user }, res, next) => 
+  User.findOne({ user_id })
+    .then(notFound(res))
+    .then((targetUser) => {
+      if (!targetUser) return null
+      return User.findByIdAndUpdate(user._id, {
+          $pull: { following: { user: targetUser._id } }
+        }, { new: true })
+        .catch(next)
+    })
+    .then(success(res, 201))
+    .catch(next)

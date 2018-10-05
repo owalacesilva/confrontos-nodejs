@@ -6,9 +6,9 @@ import Activity from './../activity'
 export const create = ({ bodymen: { body }, user }, res, next) =>
   Activity.create({ ...body, user: user._id, author: user._id })
     .then(async (activity) => {
-      const userIds = await User.distinct('_id')
-      for (let i = 0; i < userIds.length; i++) {
-        const _id = userIds[i]
+      const followersIds = await User.find()
+      for (let i = 0; i < followersIds.length; i++) {
+        const _id = followersIds[i]
         await FeedNews.create({ user: _id, activity: activity._id, relevance: 1 })
       }
       return activity
