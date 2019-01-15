@@ -2,7 +2,7 @@
 lock "~> 3.10.1"
 
 # Application name
-set :application, "confrontos"
+set :application, "confrontos-server"
 
 # Default deploy_to directory
 set :deploy_to, "/home/ubuntu/#{fetch(:application)}"

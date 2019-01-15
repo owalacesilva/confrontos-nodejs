@@ -25,6 +25,7 @@ const config = {
     root: path.join(__dirname, '..'),
     port: process.env.PORT || 9000,
     ip: process.env.IP || '0.0.0.0',
+    webRoot: process.env.API_ROOT || '/',
     apiRoot: process.env.API_ROOT || '/api',
     defaultMail: {
       fromName: "Confrontos App",

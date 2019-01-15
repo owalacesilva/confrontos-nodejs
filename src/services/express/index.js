@@ -5,11 +5,13 @@ import compression from 'compression'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import winston from 'winston'
+import api from './../../api'
+import website from './../../app-web'
 import { errorHandler as queryErrorHandler } from 'querymen'
 import { errorHandler as bodyErrorHandler } from 'bodymen'
-import { env, root } from '../../config'
+import { env, root, webRoot, apiRoot } from '../../config'
 
-export default (apiRoot, routes) => {
+export default () => {
   const app = express()
 
   /* istanbul ignore next */
@@ -31,7 +33,11 @@ export default (apiRoot, routes) => {
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json({ limit: '50MB' }))
   app.use(express.static('public'))
-  app.use(apiRoot, routes)
+
+  // Define routes wrappers
+  app.use(webRoot, website)
+  app.use(apiRoot, api)
+
   app.use((err, req, res, next) => {
     logger.error(err)
     next(err)

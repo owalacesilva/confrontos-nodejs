@@ -2,11 +2,10 @@ import path from 'path'
 import http from 'http'
 import bodymen from 'bodymen'
 import socketIo from 'socket.io'
-import { env, mongo, port, ip, apiRoot } from './config'
+import { env, mongo, port, ip } from './config'
 import mongoose from './services/mongoose'
 import express from './services/express'
 import { success, notFound } from './services/response'
-import api from './api'
 import environment from './environment'
 import mincer from 'mincer'
 import { User, schema as UserSchema } from './api/user'
@@ -14,7 +13,8 @@ import { Message } from './api/message'
 
 const { display_name, gender, email, password } = UserSchema.tree
 
-const app = express(apiRoot, api)
+// Create and manager server and chat connections
+const app = express()
 const server = http.createServer(app)
 const chatServer = http.createServer(app)
 
@@ -64,10 +64,6 @@ app.get('/congratulations', (req, res, next) =>
 
 app.get('/politica-privacidade', (req, res, next) => 
   res.render('legals/privacy')
-)
-
-app.get('/termos-uso', (req, res, next) => 
-  res.render('legals/terms')
 )
 
 mongoose.connect(mongo.uri)

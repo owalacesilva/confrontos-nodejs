@@ -1,14 +1,18 @@
 {
   "name": "confrontos-server",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "src",
   "private": true,
+  "engines" : { 
+    "node" : "^6.11.5",
+    "npm" : "~3.10.10"
+  },
   "scripts": {
     "start": "node .",
     "test": "jest",
     "coverage": "npm test -- --coverage",
     "postcoverage": "opn coverage/lcov-report/index.html",
-    "dev": "IP=192.168.15.8 nodemon --debug -i \"*.test.js\" .",
+    "dev": "IP=0.0.0.0 nodemon --debug -i \"*.test.js\" .",
     "prod": "cross-env NODE_ENV=production nodemon -i \"*.test.js\" -r dotenv-safe/config .",
     "lint": "eslint src",
     "docs": "apidoc -i src -o docs && apidoc-markdown -p docs -o DOCS.md",
@@ -85,6 +89,7 @@
     "request-promise": "^4.2.2",
     "sendgrid": "^4.0.2",
     "slug": "^0.9.1",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "winston": "2.3.1"
   }
 }
