@@ -4,6 +4,10 @@ import { Notification } from '.'
 export const index = ({ querymen: { query, select, cursor }, user }, res, next) =>
   Notification.count({ ...query, recipient: user._id })
     .then(count => Notification.find({ ...query, recipient: user._id }, select, cursor)
+      .populate({
+        path: 'recipient',
+        select: 'display_name'
+      })
       .then((notifications) => ({
         count,
         rows: notifications.map((notification) => notification.view())

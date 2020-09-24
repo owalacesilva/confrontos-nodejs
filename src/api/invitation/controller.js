@@ -61,6 +61,28 @@ export const index = ({ querymen: { query, select, cursor }, user }, res, next) 
 
 export const show = ({ params, user }, res, next) =>
   Invitation.findOne({ '_id': params.id, $or: [{ user: user._id }, { guest_user: user._id }] })
+    .populate([{
+        path: 'user',
+        select: 'display_name picture'
+      }, {
+       path: 'guest_user',
+       select: 'display_name picture'
+     }, {
+        path: 'team',
+        select: 'display_name pictures address'
+      }, {
+        path: 'guest_team',
+        select: 'display_name pictures address'
+      }, {
+        path: 'host_team',
+        select: 'display_name pictures address'
+      }, {
+        path: 'visiting_team',
+        select: 'display_name pictures address'
+      },{
+        path: 'match',
+        select: 'home_team visiting_team'
+      }])
     .then(notFound(res))
     .then((invitation) => invitation ? invitation.view() : null)
     .then(success(res))

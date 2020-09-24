@@ -17,10 +17,17 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
         path: 'visiting_team', 
         select: 'user display_name abbr slug pictures',
         populate: [{ 
-          path: 'user', 
+          path: 'user',
           select: 'display_name'
         }] 
       }])
+      .populate({
+        path: 'revisions',
+        select: 'user stats',
+        populate: {
+          path: 'user'
+        }
+      })
       .then((matches) => ({
         count,
         rows: matches.map((match) => match.view())
@@ -31,6 +38,28 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
 
 export const show = ({ params }, res, next) =>
   Match.findById(params.id)
+      .populate([{
+        path: 'home_team',
+        select: 'user display_name abbr slug pictures',
+        populate: [{
+          path: 'user',
+          select: 'display_name'
+        }]
+      }, {
+        path: 'visiting_team',
+        select: 'user display_name abbr slug pictures',
+        populate: [{
+          path: 'user',
+          select: 'display_name'
+        }]
+      }, {
+        path: 'revisions',
+        select: 'user stats',
+        populate: [{
+          path: 'user',
+          select: 'display_name'
+        }]
+      }])
     .then(notFound(res))
     .then((match) => match ? match.view() : null)
     .then(success(res))

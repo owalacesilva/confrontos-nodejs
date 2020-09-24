@@ -12,7 +12,10 @@ export const create = ({ bodymen: { body }, user }, res, next) =>
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   Team.count(query)
     .then(count => Team.find(query, select, cursor)
-      .populate({ path: 'user', select: 'display_name' })
+      .populate({
+        path: 'user',
+        select: 'display_name'
+      })
       .then((teams) => ({
         count,
         rows: teams.map((team) => team.view())
@@ -23,6 +26,10 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
 
 export const show = ({ params }, res, next) =>
   Team.findById(params.id)
+    .populate({
+      path: 'user',
+      select: 'display_name'
+    })
     .then(notFound(res))
     .then((team) => team ? team.view() : null)
     .then(success(res))

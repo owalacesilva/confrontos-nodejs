@@ -33,19 +33,21 @@ const MatchSchema = new Schema({
     "home_team_score": Number,
     "visiting_team_score": Number
   }],
-  revisions: [{
-    user: {
-      type: Schema.ObjectId,
-      required: [true, 'Player user is required'],
-      ref: 'User'
-    },
-    stats: [{
-      "name": String,
-      "label": String,
-      "home_team_score": Number,
-      "visiting_team_score": Number
+  revisions: {
+    type: [{
+      user: {
+        type: Schema.ObjectId,
+        required: [true, 'Player user is required'],
+        ref: 'User'
+      },
+      stats: [{
+        "name": String,
+        "label": String,
+        "home_team_score": Number,
+        "visiting_team_score": Number
+      }]
     }]
-  }],
+  },
   lineups: [{
     home_team:{
       user: {
